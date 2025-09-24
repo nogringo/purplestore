@@ -1,39 +1,72 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+A database that store data on Nostr.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```bash
+dart pub add purplestore
+flutter pub add purplestore
+```
+
+```dart
+final ndk = Ndk.defaultConfig();
+final db = await databaseFactoryIo.openDatabase("/database.db");
+
+final purpleStore = PurpleStore(ndk: ndk, db: db);
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
-const like = 'sample';
+final collectionRef = purpleStore.collection("words");
+
+// Listen to real-time updates
+final subscription = collectionRef.onSnapshot().listen((snapshot) {
+    print('Collection has ${snapshot.docs.length} documents');
+});
+
+// Create or update a document
+final docRef = collectionRef.doc("hello");
+await docRef.set({"word": "world"});
+
+// Add a new document with auto-generated ID
+final newDoc = await collectionRef.add({"word": "galaxy"});
+print('Created document with ID: ${newDoc.id}');
+
+// Query all documents
+final snapshot = await collectionRef.get();
+for (var word in snapshot.docs) {
+    print('Document ${word.id}: ${word.data()}');
+}
+
+// Delete a document
+await docRef.delete();
 ```
 
-## Additional information
+### Query
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+For queries, use [Sembast](https://pub.dev/packages/sembast) directly.
+
+```dart
+import 'package:sembast/sembast.dart';
+
+// Access the Sembast database from PurpleStore
+final db = purpleStore.db;
+
+// Query documents from the global store
+final store = stringMapStoreFactory.store('documents');
+
+// Find all documents in a collection
+final finder = Finder(
+  filter: Filter.equals('collection', 'users'),
+);
+final records = await store.find(db, finder: finder);
+```
+
+## TODO
+
+- [ ] Query Capabilities (maybe)
+- [ ] Use RxDart (maybe)
+
+## Here is my Nostr for contact and donation.
+
+https://nosta.me/b22b06b051fd5232966a9344a634d956c3dc33a7f5ecdcad9ed11ddc4120a7f2

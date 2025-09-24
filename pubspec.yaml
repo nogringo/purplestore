@@ -1,16 +1,16 @@
 name: purplestore
-description: A starting point for Dart libraries or applications.
+description: A database that store data on Nostr.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
 
 environment:
   sdk: ^3.9.0
 
-# Add regular dependencies here.
 dependencies:
+  meta: ^1.17.0
   ndk: ^0.5.1
+  path: ^1.9.1
   sembast: ^3.8.5+1
-  # path: ^1.9.0
+  uuid: ^4.5.1
 
 dev_dependencies:
   lints: ^6.0.0

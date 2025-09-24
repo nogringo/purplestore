@@ -1,8 +1,8 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
 library;
 
-export 'src/purplestore_base.dart';
+export 'src/purplestore.dart';
+export 'src/collection.dart';
+export 'src/document.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+export 'src/models/document_snapshot.dart';
+export 'src/models/query_snapshot.dart';

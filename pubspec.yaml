@@ -1,6 +1,7 @@
 name: purplestore
 description: A database that store data on Nostr.
 version: 1.0.0
+repository: https://github.com/nogringo/purplestore
 
 environment:
   sdk: ^3.9.0

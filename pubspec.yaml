@@ -1,6 +1,6 @@
 name: purplestore
 description: A decentralized database that stores and syncs data on the Nostr protocol with real-time updates and local caching
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/nogringo/purplestore
 
 environment:

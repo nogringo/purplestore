@@ -4,10 +4,7 @@ class QuerySnapshot {
   final List<DocumentSnapshot> docs;
   final String collection;
 
-  const QuerySnapshot({
-    required this.docs,
-    required this.collection,
-  });
+  const QuerySnapshot({required this.docs, required this.collection});
 
   int get size => docs.length;
 

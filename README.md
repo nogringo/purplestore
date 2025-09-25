@@ -1,4 +1,4 @@
-A database that store data on Nostr.
+A decentralized database that stores and syncs data on the Nostr protocol with real-time updates and local caching
 
 ## Getting started
 
@@ -64,6 +64,7 @@ final records = await store.find(db, finder: finder);
 
 ## TODO
 
+- [ ] Documents Sharing Capabilities (maybe)
 - [ ] Query Capabilities (maybe)
 - [ ] Use RxDart (maybe)
 

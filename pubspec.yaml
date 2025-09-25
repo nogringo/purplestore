@@ -1,5 +1,5 @@
 name: purplestore
-description: A database that store data on Nostr.
+description: A decentralized database that stores and syncs data on the Nostr protocol with real-time updates and local caching
 version: 1.0.0
 repository: https://github.com/nogringo/purplestore
 

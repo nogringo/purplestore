@@ -37,10 +37,9 @@ class CollectionReference {
 
     // Get documents from the global store filtered by collection
     final globalStore = stringMapStoreFactory.store('documents');
-    final records = await globalStore.find(store.db,
-      finder: Finder(
-        filter: Filter.equals('collection', path),
-      ),
+    final records = await globalStore.find(
+      store.db,
+      finder: Finder(filter: Filter.equals('collection', path)),
     );
 
     for (final record in records) {
@@ -50,7 +49,9 @@ class CollectionReference {
 
       final createdAt = eventData['created_at'] as int;
       final tags = eventData['tags'] as List;
-      final isEncrypted = tags.any((tag) => tag is List && tag.isNotEmpty && tag[0] == 'nip44');
+      final isEncrypted = tags.any(
+        (tag) => tag is List && tag.isNotEmpty && tag[0] == 'nip44',
+      );
 
       docs.add(
         DocumentSnapshot(
@@ -109,11 +110,7 @@ class CollectionReference {
       final data = jsonDecode(content) as Map<String, dynamic>;
 
       // Store the event locally
-      await storeEventLocal(
-        docId: docId,
-        event: event,
-        documentData: data,
-      );
+      await storeEventLocal(docId: docId, event: event, documentData: data);
 
       // Add to results if not already in local results
       if (!docs.any((doc) => doc.id == docId)) {
@@ -235,7 +232,7 @@ class CollectionReference {
       'event': event.toJson(),
       'collection': path,
       'docId': docId,
-      'content': documentData,  // Always decrypted/parsed JSON
+      'content': documentData, // Always decrypted/parsed JSON
     });
   }
 
@@ -266,8 +263,9 @@ class CollectionReference {
 
     subscription.stream.listen((event) async {
       // Check if it's a deletion
-      final isDeleted = event.tags.any((tag) =>
-        tag.isNotEmpty && tag[0] == 'deleted' && tag[1] == 'true');
+      final isDeleted = event.tags.any(
+        (tag) => tag.isNotEmpty && tag[0] == 'deleted' && tag[1] == 'true',
+      );
 
       // Extract document ID
       final dTag = event.tags.firstWhere(
@@ -297,11 +295,7 @@ class CollectionReference {
 
         // Parse and store
         final data = jsonDecode(content) as Map<String, dynamic>;
-        await storeEventLocal(
-          docId: docId,
-          event: event,
-          documentData: data,
-        );
+        await storeEventLocal(docId: docId, event: event, documentData: data);
       }
 
       // Emit updated snapshot

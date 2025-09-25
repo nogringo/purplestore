@@ -95,7 +95,9 @@ class DocumentReference {
 
       final createdAt = eventData['created_at'] as int;
       final tags = eventData['tags'] as List;
-      final isEncrypted = tags.any((tag) => tag is List && tag.isNotEmpty && tag[0] == 'nip44');
+      final isEncrypted = tags.any(
+        (tag) => tag is List && tag.isNotEmpty && tag[0] == 'nip44',
+      );
 
       return DocumentSnapshot(
         id: id,
@@ -178,7 +180,8 @@ class DocumentReference {
     });
 
     // Generate a unique subscription ID
-    final subId = 'doc_${collection.path}_${id}_${DateTime.now().millisecondsSinceEpoch}';
+    final subId =
+        'doc_${collection.path}_${id}_${DateTime.now().millisecondsSinceEpoch}';
 
     // Subscribe to Nostr events for this specific document
     final subscription = collection.store.ndk.requests.subscription(
@@ -193,8 +196,9 @@ class DocumentReference {
 
     subscription.stream.listen((event) async {
       // Check if it's a deletion
-      final isDeleted = event.tags.any((tag) =>
-        tag.isNotEmpty && tag[0] == 'deleted' && tag[1] == 'true');
+      final isDeleted = event.tags.any(
+        (tag) => tag.isNotEmpty && tag[0] == 'deleted' && tag[1] == 'true',
+      );
 
       if (isDeleted) {
         // Remove from local store and emit non-existent snapshot
@@ -202,14 +206,16 @@ class DocumentReference {
         final key = '${collection.path}/$id';
         await globalStore.record(key).delete(collection.store.db);
 
-        controller.add(DocumentSnapshot(
-          id: id,
-          data: null,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          collection: collection.path,
-          exists: false,
-        ));
+        controller.add(
+          DocumentSnapshot(
+            id: id,
+            data: null,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            collection: collection.path,
+            exists: false,
+          ),
+        );
       } else {
         // Check if document is encrypted
         final isEncrypted = event.tags.any((tag) => tag[0] == 'nip44');
@@ -231,15 +237,21 @@ class DocumentReference {
         );
 
         // Emit updated snapshot
-        controller.add(DocumentSnapshot(
-          id: id,
-          data: data,
-          createdAt: DateTime.fromMillisecondsSinceEpoch(event.createdAt * 1000),
-          updatedAt: DateTime.fromMillisecondsSinceEpoch(event.createdAt * 1000),
-          collection: collection.path,
-          exists: true,
-          isEncrypted: isEncrypted,
-        ));
+        controller.add(
+          DocumentSnapshot(
+            id: id,
+            data: data,
+            createdAt: DateTime.fromMillisecondsSinceEpoch(
+              event.createdAt * 1000,
+            ),
+            updatedAt: DateTime.fromMillisecondsSinceEpoch(
+              event.createdAt * 1000,
+            ),
+            collection: collection.path,
+            exists: true,
+            isEncrypted: isEncrypted,
+          ),
+        );
       }
     });
 
